@@ -1,25 +1,37 @@
 import { expect, test } from '@jest/globals';
 import 'jest';
-import * as complexOperations from './complexOperations';
+import * as comp from './complexOperations';
+import * as bas from "./basicOperations";
 
-var comp = complexOperations;
 
 describe('complexOperation - Unit Tests', () => {
   describe('checkEmail', () => {
-    test('Test a valid email', () => {
-      expect(comp.checkEmail("cas@gmail.com")).toBe('The email is valid')
+    describe("No mock",() =>{
+      test('Test a valid email', () => {
+        expect(comp.checkEmail("cas@gmail.com")).toBe('The email is valid')
+      });
+      test('Test undefine param', () => {
+        expect(comp.checkEmail()).toBe('The email should be an string')
+      });
+      test('Test a string whitout @', () => {
+        expect(comp.checkEmail("casa")).toBe('The email is invalid')
+      });
+      test('Test a string whitout .com', () => {
+        expect(comp.checkEmail("casa@gmail")).toBe('The email is invalid')
+      });
+      test('Test a string whit @.com', () => {
+        expect(comp.checkEmail("casa@.com")).toBe('The email is invalid')
+      });
     });
-    test('Test undefine param', () => {
-      expect(comp.checkEmail()).toBe('The email should be an string')
-    });
-    test('Test a string whitout @', () => {
-      expect(comp.checkEmail("casa")).toBe('The email is invalid')
-    });
-    test('Test a string whitout .com', () => {
-      expect(comp.checkEmail("casa@gmail")).toBe('The email is invalid')
-    });
-    test('Test a string whit @.com', () => {
-      expect(comp.checkEmail("casa@.com")).toBe('The email is invalid')
+    describe("Mock",() =>{
+      beforeEach(()=>{
+        jest.restoreAllMocks();
+      })
+      test.only('Test a valid email', () => {
+        jest.spyOn(bas,"isString").mockReturnValue(true);
+        jest.spyOn(bas,"validateEmail").mockReturnValue(true);
+        expect(comp.checkEmail(1)).toBe('The email is valid')
+      });
     });
   });
 
@@ -118,4 +130,4 @@ describe('complexOperation - Unit Tests', () => {
       expect(comp.numberOfOddAndEvenNumbers(["a","b",1])).toEqual(`The array should have only numbers`)
     });
   });
-});
+});  
