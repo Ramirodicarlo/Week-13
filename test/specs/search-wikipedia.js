@@ -5,14 +5,11 @@ describe("Search Wikipedia in Google", () =>{
     it("Go to the google input",() =>{
         let input = $("input");
         input.addValue("wikipedia");
-        browser.pause(2000);
-        let button = $("input.gNO89b");
-        button.click();
-        browser.pause(2000);
+        browser.pause(1000);
+        browser.keys("Enter");
+        browser.pause(1000);
         let wiki = $("h3.LC20lb.DKV0Md")
         wiki.click();
         expect(browser.getUrl()).toMatch("https://es.wikipedia.org/wiki/Wikipedia:Portada");
     });
-
-
 })
