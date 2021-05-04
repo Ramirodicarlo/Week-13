@@ -10,6 +10,6 @@ describe("Search Wikipedia in Google", () =>{
         browser.pause(1000);
         let wiki = $("h3.LC20lb.DKV0Md")
         wiki.click();
-        expect(browser.getUrl()).toMatch("https://es.wikipedia.org/wiki/Wikipedia:Portada");
+        expect(browser).toHaveUrl("https://es.wikipedia.org/wiki/Wikipedia:Portada");
     });
 })
