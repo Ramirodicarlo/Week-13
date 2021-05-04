@@ -6,7 +6,6 @@ import * as bas from "./basicOperations";
 
 describe('complexOperation - Unit Tests', () => {
   describe('checkEmail', () => {
-    describe("No mock",() =>{
       test('Test a valid email', () => {
         expect(comp.checkEmail("cas@gmail.com")).toBe('The email is valid')
       });
@@ -22,17 +21,15 @@ describe('complexOperation - Unit Tests', () => {
       test('Test a string whit @.com', () => {
         expect(comp.checkEmail("casa@.com")).toBe('The email is invalid')
       });
-    });
-    describe("Mock",() =>{
+    // Mock //
       beforeEach(()=>{
         jest.restoreAllMocks();
       })
-      test.only('Test a valid email', () => {
+      test('Test a valid email', () => {
         jest.spyOn(bas,"isString").mockReturnValue(true);
         jest.spyOn(bas,"validateEmail").mockReturnValue(true);
         expect(comp.checkEmail(1)).toBe('The email is valid')
       });
-    });
   });
 
   describe('calculateArea', () => {
@@ -63,6 +60,33 @@ describe('complexOperation - Unit Tests', () => {
     test('Enter nothing', () => {
       expect(comp.calculateArea()).toBe('undefined is not supported')
     });
+    // Mock //
+    beforeEach(()=>{
+      jest.restoreAllMocks();
+    })
+    test('Area nothing', () => {
+      jest.spyOn(bas,"isSupportedFigure").mockReturnValue(true);
+      jest.spyOn(bas,"isNumber").mockReturnValue(true);
+      expect(comp.calculateArea(" ")).toBe("  is not supported")
+    });
+    test('Area of square with a side size of 5', () => {
+      jest.spyOn(bas,"isSupportedFigure").mockReturnValue(true);
+      jest.spyOn(bas,"isNumber").mockReturnValue(true);
+      jest.spyOn(bas,"multip").mockReturnValue(25);
+      expect(comp.calculateArea("square")).toBe(25)
+    });
+    test('Area of triangle with a side size of 5', () => {
+      jest.spyOn(bas,"isSupportedFigure").mockReturnValue(true);
+      jest.spyOn(bas,"isNumber").mockReturnValue(true);
+      jest.spyOn(bas,"division").mockReturnValue(12.5);
+      expect(comp.calculateArea("triangle",7,"a")).toBe(12.5)
+    });
+    test('Area of circule with a radium sie of 5', () => {
+      jest.spyOn(bas,"isSupportedFigure").mockReturnValue(true);
+      jest.spyOn(bas,"isNumber").mockReturnValue(true);
+      jest.spyOn(bas,"exponent").mockReturnValue(25);
+      expect(comp.calculateArea("circle")).toBeCloseTo(78.539)
+    });
   });
 
   describe('sumGratherThan', () => {
@@ -78,6 +102,25 @@ describe('complexOperation - Unit Tests', () => {
     test('Enter an array', () => {
       expect(comp.sumGratherThan([],2,3)).toBe('The params should be numbers')
     });
+    // Mock //
+    beforeEach(()=>{
+      jest.restoreAllMocks();
+    })
+    test('Sum Grather than 3', () => {
+      jest.spyOn(bas,"isNumber").mockReturnValue(true);
+      jest.spyOn(bas,"sum").mockReturnValue(4);
+      expect(comp.sumGratherThan("","",3)).toBe(`4 is grather than 3`)
+    });
+    test('Sum Less than 5', () => {
+      jest.spyOn(bas,"isNumber").mockReturnValue(true);
+      jest.spyOn(bas,"sum").mockReturnValue(4);
+      expect(comp.sumGratherThan("","",5)).toBe(`4 is less than 5`)
+    });
+    test('Sum Less than undefined?', () => {
+      jest.spyOn(bas,"isNumber").mockReturnValue(true);
+      jest.spyOn(bas,"sum").mockReturnValue(4);
+      expect(comp.sumGratherThan(5)).toBe(`4 is less than undefined`)
+    });
   });
 
   describe('intersectionBetweenArrays', () => {
@@ -90,30 +133,62 @@ describe('complexOperation - Unit Tests', () => {
     test('Array2 undefine', () => {
       expect(comp.intersectionBetweenArrays([1,2],)).toBe('The params should be arrays')
     });
+    // Mock //
+    beforeEach(()=>{
+      jest.restoreAllMocks();
+    })
+    test('Elements in commmon between arrays', () => {
+      jest.spyOn(bas,"isArray").mockReturnValue(true);
+      jest.spyOn(bas,"arrayIntersection").mockReturnValue([1,"a"]);
+      expect(comp.intersectionBetweenArrays()).toEqual([1,"a"])
+    });    
+    test('Elements in commmon between arrays', () => {
+      jest.spyOn(bas,"isArray").mockReturnValue(true);
+      jest.spyOn(bas,"arrayIntersection").mockReturnValue([1,"a"]);
+      expect(comp.intersectionBetweenArrays(56,["b"])).toEqual([1,"a"])
+    });    
   });
 
   describe('sortArrayOfObjectsByKey', () => {
-    test('Sort 2 arrays by name', () => {
+    test('Sort 2 objets by name', () => {
       expect(comp.sortArrayOfObjectsByKey([{name:"jesus"},{name:"ana"}],"name")).toEqual([{name:"ana"},{name:"jesus"}])
     });
-    test('Sort 2 arrays by name', () => {
+    test('Sort 2 objets by name', () => {
       expect(comp.sortArrayOfObjectsByKey([{name:"jesus"},{name:"xavi"}],"name")).toEqual([{name:"jesus"},{name:"xavi"}])
     });
-    test('Sort 2 equals arrays by name', () => {
+    test('Sort 2 equals objets by name', () => {
       expect(comp.sortArrayOfObjectsByKey([{name:"jesus"},{name:"jesus"}],"name")).toEqual([{name:"jesus"},{name:"jesus"}])
     });
     test('Array undefined', () => {
       expect(comp.sortArrayOfObjectsByKey(undefined,"name")).toEqual('The first param should be an array')
     });
-    test('Sort 2 arrays by a number', () => {
+    test('Sort 2 objets by a number', () => {
       expect(comp.sortArrayOfObjectsByKey([{name:"jesus"},{name:"ana"}],1)).toEqual('The second param should be an string')
     });
-    test('Sort 2 arrays by string = 12', () => {
+    test('Sort 2 objets by string = 12', () => {
       expect(comp.sortArrayOfObjectsByKey([{name:"jesus"},{name:"ana"}],"12")).toEqual(`Some elements in the array does not have the 12 property`)
     });
-    test('Sort 3 arrays by name, but 1 does not have that property', () => {
+    test('Sort 3 objets by name, but 1 does not have that property', () => {
       expect(comp.sortArrayOfObjectsByKey([{name:"jesus"},{name:"ana"},{car:"maria"}],"name")).toEqual(`Some elements in the array does not have the name property`)
     });
+    // Mock //
+    beforeEach(()=>{
+      jest.restoreAllMocks();
+    })
+    test('Sorts of undefined by  ', () => {
+      jest.spyOn(bas,"isArray").mockReturnValue(true);
+      jest.spyOn(bas,"isString").mockReturnValue(true);
+      jest.spyOn(bas,"arrayElementsAreObjectWithKey").mockReturnValue(true);
+      jest.spyOn(bas,"sortArrayByKey").mockReturnValue([{name:"jose"},{name:"juan cruz"}]);
+      expect(comp.sortArrayOfObjectsByKey(undefined," ")).toEqual([{name:"jose"},{name:"juan cruz"}])
+    });      
+    test('Sorts of objets by car', () => {
+      jest.spyOn(bas,"isArray").mockReturnValue(true);
+      jest.spyOn(bas,"isString").mockReturnValue(true);
+      jest.spyOn(bas,"arrayElementsAreObjectWithKey").mockReturnValue(true);
+      jest.spyOn(bas,"sortArrayByKey").mockReturnValue([{name:"jose"},{name:"juan cruz"}]);
+      expect(comp.sortArrayOfObjectsByKey([{name:"ana"},{name:"juan"}],"car")).toEqual([{name:"jose"},{name:"juan cruz"}])
+    });   
   });
 
   describe('numberOfOddAndEvenNumbers', () => {
@@ -129,5 +204,23 @@ describe('complexOperation - Unit Tests', () => {
     test('Array of letters and numbers', () => {
       expect(comp.numberOfOddAndEvenNumbers(["a","b",1])).toEqual(`The array should have only numbers`)
     });
+    // Mock //
+    beforeEach(()=>{
+      jest.restoreAllMocks();
+    })
+    test('Odd and even numbers  ', () => {
+      jest.spyOn(bas,"isArray").mockReturnValue(true);
+      jest.spyOn(bas,"isNumber").mockReturnValue(true);
+      jest.spyOn(bas,"getOddNumbersFromArray").mockReturnValue(["",1]);
+      jest.spyOn(bas,"getEvenNumbersFromArray").mockReturnValue([2,"A",null]);
+      expect(comp.numberOfOddAndEvenNumbers([" "])).toEqual({odd:2,even:3})
+    });      
+    test('Odd and even numbers  ', () => {
+      jest.spyOn(bas,"isArray").mockReturnValue(true);
+      jest.spyOn(bas,"isNumber").mockReturnValue(true);
+      jest.spyOn(bas,"getOddNumbersFromArray").mockReturnValue(["",1]);
+      jest.spyOn(bas,"getEvenNumbersFromArray").mockReturnValue([2,"A",null]);
+      expect(comp.numberOfOddAndEvenNumbers([" ",null,2,4,8])).toEqual({odd:2,even:3})
+    });  
   });
 });  
